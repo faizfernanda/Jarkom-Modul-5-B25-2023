@@ -11,7 +11,7 @@
 ### Subnetting
 ![plotting subnetting](https://github.com/faizfernanda/Jarkom-Modul-5-B25-2023/assets/101172294/8a8b6955-8ac1-4bdf-aa61-110203b6aac5)
 #### Tree
-
+![Retrospectives (3)](https://github.com/faizfernanda/Jarkom-Modul-5-B25-2023/assets/101172294/fa9fb6f0-16a8-4f4c-89aa-5575e2ffed8b)
 #### VLSM Table
 ![vlsm](https://github.com/faizfernanda/Jarkom-Modul-5-B25-2023/assets/101172294/3bedeada-6fe3-42ba-8c5d-12bf71351766)
 #### Ip Distribution
