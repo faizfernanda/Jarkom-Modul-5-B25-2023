@@ -349,3 +349,58 @@ iptables -A INPUT -p udp -j DROP
 iptables -A INPUT -p tcp ! --dport 8080 -j DROP
 iptables -A INPUT -p tcp -j DROP
 ```
+#### Hasil Testing
+- Dari Sender
+![No 2 sender](https://github.com/faizfernanda/Jarkom-Modul-5-B25-2023/assets/101172294/6144a21b-6eb7-4eac-9b83-a0d86e324410)
+- Dari Receiver
+![no 2 receiver](https://github.com/faizfernanda/Jarkom-Modul-5-B25-2023/assets/101172294/6564d017-0702-480e-b022-1d73bc297ce9)
+
+### Soal-No-3
+Kepala Suku North Area meminta kalian untuk membatasi DHCP dan DNS Server hanya dapat dilakukan ping oleh maksimal 3 device secara bersamaan, selebihnya akan di drop
+
+#### Penyelesaian 
+Untuk menyelesaikan problem di atas maka di perlukan sytax seperti di bawah ini :
+```
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+
+```
+#### Hasil Testing
+Bisa di lihat pada client ```TurkRegion``` ping tidak dapat di lakukan karena ada nya pembatasan maximal 3 client
+![no 3 testing](https://github.com/faizfernanda/Jarkom-Modul-5-B25-2023/assets/101172294/6e238bea-60ad-489a-83c9-8c6d77342829)
+
+### Soal-No-4
+Lakukan pembatasan sehingga koneksi SSH pada Web Server hanya dapat dilakukan oleh masyarakat yang berada pada GrobeForest.
+
+#### Penyelesaian 
+Untuk menyelesaikan problem di atas maka di perlukan sytax seperti di bawah ini :
+```
+#pada Sein
+# Allow SSH from a specific IP range
+iptables -A INPUT -p tcp --dport 22 -m iprange --src-range 10.21.8.3-10.21.10.5 -j ACCEPT
+
+# Drop SSH from all other sources
+iptables -A INPUT -p tcp --dport 22 -j DROP
+
+```
+
+#### Hasil Testing
+Terlihat dari Hasil Testing bahwa yang muncul hanya yang berada di GrobForest sedangkan client lainnya tidak menerima pesan
+![No 4 testing](https://github.com/faizfernanda/Jarkom-Modul-5-B25-2023/assets/101172294/27714bc3-8844-4ca8-b1da-1a8c1c23e12a)
+
+### Soal-No-5
+Selain itu, akses menuju WebServer hanya diperbolehkan saat jam kerja yaitu Senin-Jumat pada pukul 08.00-16.00.
+
+#### Penyelesaian 
+Untuk menyelesaikan problem di atas maka di perlukan sytax seperti di bawah ini :
+```
+# Allow HTTP access only during working hours (Monday-Friday, 08:00-16:00)
+iptables -A INPUT -p tcp --dport 80 -m time --timestart 08:00 --timestop 16:00 --weekdays Mon,Tue,Wed,Thu,Fri -j ACCEPT
+
+# Drop other HTTP traffic
+iptables -A INPUT -p tcp --dport 80 -j DROP
+
+```
+#### Hasil Testing
+Terlihat hasil testing bahwa saat waktu server bukan berada di antara 08:00-16:00 walau di hari yang kita tentukan, maka client tidak menerima pesan yang di kirim web server (Sein)
+![No5 hasil](https://github.com/faizfernanda/Jarkom-Modul-5-B25-2023/assets/101172294/13736ce7-5dfb-4b25-b6b1-79776844de53)
