@@ -97,22 +97,16 @@ iface eth0 inet static
 	netmask 255.255.252.0
   gateway 10.21.8.1
 ```
-- #### GroberForest
+- #### TurkRegion
 ```
 auto eth0
-iface eth0 inet static
-	address 10.21.8.3
-	netmask 255.255.252.0
-  gateway 10.21.8.1
+iface eth0 inet dhcp
 
 ```
 - #### GroberForest
 ```
 auto eth0
-iface eth0 inet static
-	address 10.21.8.3
-	netmask 255.255.252.0
-  gateway 10.21.8.1
+iface eth0 inet dhcp
 ```
 - #### Frieren 
 ```
@@ -193,18 +187,12 @@ route add -net 10.21.14.132 netmask 255.255.255.252 gw 10.21.14.2
 - #### LaubHils
 ```
 auto eth0
-iface eth0 inet static
-	address 10.21.12.2
-	netmask 255.255.254.0
-  gateway 10.21.12.1
+iface eth0 inet dhcp
 ```
 - #### SchwerMountain
 ```
 auto eth0
-iface eth0 inet static
-	address 10.21.14.3
-	netmask 255.255.255.128
-  gateway 10.21.14.1
+iface eth0 inet dhcp
 ```
 - #### Fern
 ```
