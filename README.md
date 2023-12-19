@@ -321,8 +321,10 @@ Lalu pada setiap node di tambahkan ``` nameserver 192.168.122.1 ``` pada ``` /et
 
 #### Hasil Testing
 - **AURA**
+
 ![No 1 Aura](https://github.com/faizfernanda/Jarkom-Modul-5-B25-2023/assets/101172294/1d0449d5-0cfd-4822-8dd9-dd19da1bb48b)
 - **Client**
+
 ![no 1 client](https://github.com/faizfernanda/Jarkom-Modul-5-B25-2023/assets/101172294/beb68d5c-6e5b-4011-814d-176ec10777e6)
 ### Soal-No-2
 Kalian diminta untuk melakukan drop semua TCP dan UDP kecuali port 8080 pada TCP.
