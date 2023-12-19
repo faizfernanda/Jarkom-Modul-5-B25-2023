@@ -407,7 +407,7 @@ iptables -A INPUT -p tcp --dport 80 -m time --timestart 11:00 --timestop 13:00 -
 ```
 
 #### Hasil Testing
-
+https://github.com/faizfernanda/Jarkom-Modul-5-B25-2023/assets/88433109/1eb5c451-a4f5-4d13-a309-0fd416708a39
 
 ### Soal-No-7
 Karena terdapat 2 Web Server, kalian diminta agar setiap client yang mengakses Sein dengan Port 80 akan didistribusikan secara bergantian pada Sein dan Stark secara berurutan dan request dari client yang mengakses Stark dengan port 443 akan didistribusikan secara bergantian pada Sein dan Stark secara berurutan.
