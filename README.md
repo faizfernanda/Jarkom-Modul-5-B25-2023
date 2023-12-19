@@ -392,3 +392,90 @@ iptables -A INPUT -p tcp --dport 80 -j DROP
 #### Hasil Testing
 Terlihat hasil testing bahwa saat waktu server bukan berada di antara 08:00-16:00 walau di hari yang kita tentukan, maka client tidak menerima pesan yang di kirim web server (Sein)
 ![No5 hasil](https://github.com/faizfernanda/Jarkom-Modul-5-B25-2023/assets/101172294/13736ce7-5dfb-4b25-b6b1-79776844de53)
+
+### Soal-No-6
+Lalu, karena ternyata terdapat beberapa waktu di mana network administrator dari WebServer tidak bisa stand by, sehingga perlu ditambahkan rule bahwa akses pada hari Senin - Kamis pada jam 12.00 - 13.00 dilarang (istirahat maksi cuy) dan akses di hari Jumat pada jam 11.00 - 13.00 juga dilarang (maklum, Jumatan rek).
+
+#### Penyelesaian 
+Tambahkan script pada `Sein` dan `Stark` sebagai Web Server :
+```
+# Drop akses pada hari Senin-Kamis jam 12:00 - 13:00
+iptables -A INPUT -p tcp --dport 80 -m time --timestart 12:00 --timestop 13:00 --weekdays Mon,Tue,Wed,Thu -j DROP
+
+# Drop akses pada hari Jum'at pada 11:00 - 13:00
+iptables -A INPUT -p tcp --dport 80 -m time --timestart 11:00 --timestop 13:00 --weekdays Fri -j DROP
+```
+
+#### Hasil Testing
+
+
+### Soal-No-7
+Karena terdapat 2 Web Server, kalian diminta agar setiap client yang mengakses Sein dengan Port 80 akan didistribusikan secara bergantian pada Sein dan Stark secara berurutan dan request dari client yang mengakses Stark dengan port 443 akan didistribusikan secara bergantian pada Sein dan Stark secara berurutan.
+
+#### Penyelesaian 
+Tambahkan script pada `Sein` dan `Stark` sebagai Web Server :
+- Sein
+  ```
+  iptables -A PREROUTING -t nat -p tcp -d 10.21.8.2 --dport 80 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 10.21.8.2:80
+
+  iptables -A PREROUTING -t nat -p tcp -d 10.21.8.2 --dport 80 -j DNAT --to-destination 10.21.14.138:80
+  ```
+
+- Stark
+  ```
+  iptables -A PREROUTING -t nat -p tcp -d 10.21.8.2 --dport 443 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 10.21.8.2:443
+
+  iptables -A PREROUTING -t nat tcp -d 10.21.8.2 --dport 443 -j DNAT --to-destination 10.21.14.138:443
+  ```
+
+#### Hasil Testing
+
+
+### Soal-No-8
+Karena berbeda koalisi politik, maka subnet dengan masyarakat yang berada pada Revolte dilarang keras mengakses WebServer hingga masa pencoblosan pemilu kepala suku 2024 berakhir. Masa pemilu (hingga pemungutan dan penghitungan suara selesai) kepala suku bersamaan dengan masa pemilu Presiden dan Wakil Presiden Indonesia 2024.
+
+#### Penyelesaian 
+Tambahkan script pada `Sein` dan `Stark` sebagai Web Server :
+- Sein
+  ```
+  iptables -A INPUT -s 10.21.14.130 -m time --datestart 2023-10-19T00:00 --datestop 2024-02-15T00:00 -j DROP
+  ```
+  
+- Stark
+  ```
+  iptables -A INPUT -s 10.21.14.130 -m time --datestart 2023-10-19T00:00 --datestop 2024-02-15T00:00 -j DROP
+  ```
+
+#### Hasil Testing
+
+
+### Soal-No-9
+Sadar akan adanya potensial saling serang antar kubu politik, maka WebServer harus dapat secara otomatis memblokir  alamat IP yang melakukan scanning port dalam jumlah banyak (maksimal 20 scan port) di dalam selang waktu 10 menit. 
+(clue: test dengan nmap)
+
+#### Penyelesaian 
+Tambahkan script pada `Sein` dan `Stark` sebagai Web Server :
+- Sein dan Stark
+  ```
+  iptables -N portscan
+
+  iptables -A INPUT -m recent --name portscan --update --seconds 600 --hitcount 20 -j DROP
+  iptables -A FORWARD -m recent --name portscan --update --seconds 600 --hitcount 20 -j DROP
+
+  iptables -A INPUT -m recent --name portscan --set -j ACCEPT
+  iptables -A FORWARD -m recent --name portscan --set -j ACCEPT
+  ```
+
+#### Hasil Testing
+
+
+### Soal-No-10
+Karena kepala suku ingin tau paket apa saja yang di-drop, maka di setiap node server dan router ditambahkan logging paket yang di-drop dengan standard syslog level. 
+
+#### Penyelesaian 
+Tambahkan script pada setiap node server dan router :
+ ```
+ iptables -A INPUT -j LOG --log-level debug --log-prefix "Dropped Packet" -m limit --limit 1/second --limit-burst 10
+ ```
+
+#### Hasil Testing
